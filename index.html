@@ -1,212 +1,429 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Talk-to-Data — Simple Frontend</title>
-  <style>
-    :root{--bg:#0f172a;--card:#111827;--accent:#f59e0b;--muted:#9ca3af;color-scheme:dark}
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,'Helvetica Neue',Arial}
-    body{background:linear-gradient(180deg,#071129 0%, #071533 60%);padding:28px;color:#e5e7eb}
-    .center{max-width:980px;margin:0 auto}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,.6);}
-    header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
-    header h1{font-size:18px;margin:0}
-    .login, .dashboard{margin-top:18px}
-    input[type="password"], textarea, input[type="text"]{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
-    button{background:var(--accent);border:none;padding:10px 14px;border-radius:10px;color:#071129;font-weight:700;cursor:pointer}
-    .muted{color:var(--muted);font-size:13px}
-    .row{display:flex;gap:12px}
-    .col{flex:1}
-    .responses{margin-top:14px}
-    pre{white-space:pre-wrap;background:linear-gradient(90deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:12px;border-radius:8px;overflow:auto}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{padding:8px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.03)}
-    .small{font-size:13px}
-    .spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(0,0,0,0.05);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .controls{display:flex;gap:8px;align-items:center}
-    footer{margin-top:18px;color:var(--muted);font-size:13px}
-    .notice{background:linear-gradient(90deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));padding:8px;border-radius:8px;color:var(--accent);font-weight:600}
-  </style>
-</head>
-<body>
-  <div class="center">
-    <div class="card">
-      <header>
-        <h1>Talk‑to‑Data — Simple static frontend</h1>
-        <div class="small muted">Designed to replace the React client. Drop this as <code>index.html</code> in your static folder.</div>
-      </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Talk-to-Data — Simple Frontend</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #111827;
+        --accent: #f59e0b;
+        --muted: #9ca3af;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          Roboto, "Helvetica Neue", Arial;
+      }
+      body {
+        background: linear-gradient(180deg, #071129 0%, #071533 60%);
+        padding: 28px;
+        color: #e5e7eb;
+      }
+      .center {
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      .card {
+        background: var(--card);
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(2, 6, 23, 0.6);
+      }
+      header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+      header h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .login,
+      .dashboard {
+        margin-top: 18px;
+      }
+      input[type="password"],
+      textarea,
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: transparent;
+        color: inherit;
+      }
+      button {
+        background: var(--accent);
+        border: none;
+        padding: 10px 14px;
+        border-radius: 10px;
+        color: #071129;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+      }
+      .col {
+        flex: 1;
+      }
+      .responses {
+        margin-top: 14px;
+      }
+      pre {
+        white-space: pre-wrap;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.01)
+        );
+        padding: 12px;
+        border-radius: 8px;
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      .small {
+        font-size: 13px;
+      }
+      .spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 3px solid rgba(0, 0, 0, 0.05);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .notice {
+        background: linear-gradient(
+          90deg,
+          rgba(245, 158, 11, 0.08),
+          rgba(245, 158, 11, 0.02)
+        );
+        padding: 8px;
+        border-radius: 8px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">
+      <div class="card">
+        <header>
+          <h1>Talk‑to‑Data</h1>
+          <div class="small muted"></div>
+        </header>
 
-      <div id="app">
-        <!-- login -->
-        <div id="login" class="login">
-          <div class="muted small">Enter admin password to continue (default: <code>123</code>)</div>
-          <div style="margin-top:8px">
-            <input id="password" type="password" placeholder="Admin password" />
-          </div>
-          <div style="margin-top:10px;display:flex;gap:8px">
-            <button id="loginBtn">Login</button>
-            <button id="demoBtn" style="background:transparent;color:var(--accent);border:1px solid rgba(255,255,255,0.04);">Try demo</button>
-          </div>
-          <div id="loginError" class="muted" style="margin-top:10px;display:none;color:#fca5a5"></div>
-        </div>
-
-        <!-- dashboard -->
-        <div id="dashboard" class="dashboard" style="display:none">
-          <div class="row">
-            <div class="col">
-              <label class="muted small">Backend API URL</label>
-              <input id="apiUrl" type="text" value="https://talk-to-data-cd0d.onrender.com/" />
+        <div id="app">
+          <!-- login -->
+          <div id="login" class="login">
+            <div class="muted small">
+              Enter admin password to continue (default: <code>123</code>)
             </div>
-            <div style="width:180px">
-              <label class="muted small">Quick actions</label>
-              <div style="display:flex;gap:8px;margin-top:6px">
-                <button id="logout">Logout</button>
-                <button id="clear">Clear</button>
+            <div style="margin-top: 8px">
+              <input
+                id="password"
+                type="password"
+                placeholder="Admin password"
+              />
+            </div>
+            <div style="margin-top: 10px; display: flex; gap: 8px">
+              <button id="loginBtn">Login</button>
+              <button
+                id="demoBtn"
+                style="
+                  background: transparent;
+                  color: var(--accent);
+                  border: 1px solid rgba(255, 255, 255, 0.04);
+                "
+              >
+                Try demo
+              </button>
+            </div>
+            <div
+              id="loginError"
+              class="muted"
+              style="margin-top: 10px; display: none; color: #fca5a5"
+            ></div>
+          </div>
+
+          <!-- dashboard -->
+          <div id="dashboard" class="dashboard" style="display: none">
+            <div class="row">
+              <div class="col">
+                <label class="muted small">Backend API URL</label>
+                <input
+                  id="apiUrl"
+                  type="text"
+                  value="https://talk-to-data-cd0d.onrender.com/"
+                />
+              </div>
+              <div style="width: 180px">
+                <label class="muted small">Quick actions</label>
+                <div style="display: flex; gap: 8px; margin-top: 6px">
+                  <button id="logout">Logout</button>
+                  <button id="clear">Clear</button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div style="margin-top:12px">
-            <label class="muted small">Ask your dataset (text prompt)</label>
-            <textarea id="prompt" rows="4" placeholder="e.g. Show sales for last month broken down by region"></textarea>
-            <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
-              <button id="send">Send</button>
-              <div id="status" class="muted small" style="display:flex;align-items:center;gap:8px"></div>
+            <div style="margin-top: 12px">
+              <label class="muted small">Ask your dataset (text prompt)</label>
+              <textarea
+                id="prompt"
+                rows="4"
+                placeholder="e.g. Show sales for last month broken down by region"
+              ></textarea>
+              <div
+                style="
+                  margin-top: 8px;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                "
+              >
+                <button id="send">Send</button>
+                <div
+                  id="status"
+                  class="muted small"
+                  style="display: flex; align-items: center; gap: 8px"
+                ></div>
+              </div>
             </div>
-          </div>
 
-          <div class="responses">
-            <div class="notice">Responses will appear below. If backend returns JSON array of objects, it will render as a table automatically.</div>
-            <div id="outputArea" style="margin-top:10px"></div>
-          </div>
+            <div class="responses">
+              <div class="notice">
+                Responses will appear below. If backend returns JSON array of
+                objects, it will render as a table automatically.
+              </div>
+              <div id="outputArea" style="margin-top: 10px"></div>
+            </div>
 
-          <footer>
-            If your backend expects a different route, change the endpoint in the code (default: <code>/api/query</code>). After deploying, serve this file from the same host or set CORS accordingly.
-          </footer>
+            <!-- <footer>
+              If your backend expects a different route, change the endpoint in
+              the code (default: <code>/api/query</code>). After deploying,
+              serve this file from the same host or set CORS accordingly.
+            </footer> -->
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    // Simple single-file frontend to replace the React client.
-    const LOGIN_PW = '123'; // default from original project
-    const loginEl = document.getElementById('login');
-    const dashboardEl = document.getElementById('dashboard');
-    const passwordInput = document.getElementById('password');
-    const loginBtn = document.getElementById('loginBtn');
-    const demoBtn = document.getElementById('demoBtn');
-    const loginError = document.getElementById('loginError');
-    const apiUrlInput = document.getElementById('apiUrl');
-    const promptInput = document.getElementById('prompt');
-    const sendBtn = document.getElementById('send');
-    const statusEl = document.getElementById('status');
-    const outputArea = document.getElementById('outputArea');
-    const logoutBtn = document.getElementById('logout');
-    const clearBtn = document.getElementById('clear');
+    <script>
+      // Simple single-file frontend to replace the React client.
+      const LOGIN_PW = "123"; // default from original project
+      const loginEl = document.getElementById("login");
+      const dashboardEl = document.getElementById("dashboard");
+      const passwordInput = document.getElementById("password");
+      const loginBtn = document.getElementById("loginBtn");
+      const demoBtn = document.getElementById("demoBtn");
+      const loginError = document.getElementById("loginError");
+      const apiUrlInput = document.getElementById("apiUrl");
+      const promptInput = document.getElementById("prompt");
+      const sendBtn = document.getElementById("send");
+      const statusEl = document.getElementById("status");
+      const outputArea = document.getElementById("outputArea");
+      const logoutBtn = document.getElementById("logout");
+      const clearBtn = document.getElementById("clear");
 
-    // endpoint path used by original React app
-    const ENDPOINT_PATH = '/api/query';
+      // endpoint path used by original React app
+      const ENDPOINT_PATH = "/api/query";
 
-    function showSpinner() {
-      statusEl.innerHTML = '<span class="spinner" aria-hidden="true"></span> Sending...';
-    }
-    function hideSpinner() { statusEl.innerHTML = ''; }
-
-    function renderJSONTable(arr) {
-      if (!Array.isArray(arr) || arr.length === 0) return '<div class="muted small">No table data.</div>';
-      // determine columns
-      const cols = Array.from(arr.reduce((s,row)=>{Object.keys(row||{}).forEach(k=>s.add(k));return s}, new Set()));
-      let html = '<div style="overflow:auto"><table><thead><tr>' + cols.map(c=>`<th>${escapeHtml(c)}</th>`).join('') + '</tr></thead><tbody>';
-      for(const row of arr){
-        html += '<tr>' + cols.map(c=>`<td>${escapeHtml(String(row[c] ?? ''))}</td>`).join('') + '</tr>';
+      function showSpinner() {
+        statusEl.innerHTML =
+          '<span class="spinner" aria-hidden="true"></span> Sending...';
       }
-      html += '</tbody></table></div>';
-      return html;
-    }
+      function hideSpinner() {
+        statusEl.innerHTML = "";
+      }
 
-    function escapeHtml(s){ return s.replace(/[&<>"']/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]}); }
+      function renderJSONTable(arr) {
+        if (!Array.isArray(arr) || arr.length === 0)
+          return '<div class="muted small">No table data.</div>';
+        // determine columns
+        const cols = Array.from(
+          arr.reduce((s, row) => {
+            Object.keys(row || {}).forEach((k) => s.add(k));
+            return s;
+          }, new Set())
+        );
+        let html =
+          '<div style="overflow:auto"><table><thead><tr>' +
+          cols.map((c) => `<th>${escapeHtml(c)}</th>`).join("") +
+          "</tr></thead><tbody>";
+        for (const row of arr) {
+          html +=
+            "<tr>" +
+            cols
+              .map((c) => `<td>${escapeHtml(String(row[c] ?? ""))}</td>`)
+              .join("") +
+            "</tr>";
+        }
+        html += "</tbody></table></div>";
+        return html;
+      }
 
-    async function sendPrompt(prompt){
-      const base = apiUrlInput.value.trim() || 'https://talk-to-data-cd0d.onrender.com/';
-      const url = base.replace(/\/+$/,'') + ENDPOINT_PATH;
-      showSpinner();
-      try{
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type':'application/json' },
-          body: JSON.stringify({ prompt })
+      function escapeHtml(s) {
+        return s.replace(/[&<>"']/g, function (c) {
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          }[c];
         });
-        hideSpinner();
-        if(!res.ok){
-          const t = await res.text();
-          outputArea.innerHTML = `<pre>Server error (${res.status})\n${escapeHtml(t)}</pre>`;
+      }
+
+      async function sendPrompt(prompt) {
+        const base =
+          apiUrlInput.value.trim() || "https://talk-to-data-cd0d.onrender.com/";
+        const url = base.replace(/\/+$/, "") + ENDPOINT_PATH;
+        showSpinner();
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt }),
+          });
+          hideSpinner();
+          if (!res.ok) {
+            const t = await res.text();
+            outputArea.innerHTML = `<pre>Server error (${
+              res.status
+            })\n${escapeHtml(t)}</pre>`;
+            return;
+          }
+          const data = await res.json();
+          // heuristics to render nicely:
+          // 1) if data is an array of objects -> table
+          // 2) if data.rows or data.data or data.table -> table
+          // else pretty print JSON / text
+          if (
+            Array.isArray(data) &&
+            data.length > 0 &&
+            typeof data[0] === "object"
+          ) {
+            outputArea.innerHTML = renderJSONTable(data);
+          } else if (
+            data &&
+            (Array.isArray(data.rows) ||
+              Array.isArray(data.data) ||
+              Array.isArray(data.table))
+          ) {
+            const arr = data.rows || data.data || data.table;
+            outputArea.innerHTML = renderJSONTable(arr);
+          } else if (typeof data === "object") {
+            outputArea.innerHTML =
+              "<pre>" + escapeHtml(JSON.stringify(data, null, 2)) + "</pre>";
+          } else {
+            outputArea.innerHTML =
+              "<pre>" + escapeHtml(String(data)) + "</pre>";
+          }
+        } catch (err) {
+          hideSpinner();
+          outputArea.innerHTML = `<pre>Network error: ${escapeHtml(
+            err.message || String(err)
+          )}</pre>`;
+        }
+      }
+
+      loginBtn.addEventListener("click", () => {
+        const pw = passwordInput.value || "";
+        if (pw === LOGIN_PW) {
+          localStorage.setItem("ttd_logged", "1");
+          showDashboard();
+        } else {
+          loginError.style.display = "block";
+          loginError.textContent = 'Invalid password. Try "123" for demo.';
+        }
+      });
+
+      demoBtn.addEventListener("click", () => {
+        // auto-login as demo and populate example
+        localStorage.setItem("ttd_logged", "1");
+        showDashboard();
+        promptInput.value =
+          "Show me a small example table of users with name and age";
+      });
+
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("ttd_logged");
+        location.reload();
+      });
+
+      clearBtn.addEventListener("click", () => {
+        promptInput.value = "";
+        outputArea.innerHTML = "";
+      });
+
+      sendBtn.addEventListener("click", () => {
+        const p = promptInput.value.trim();
+        if (!p) {
+          outputArea.innerHTML =
+            '<div class="muted small">Type a prompt first.</div>';
           return;
         }
-        const data = await res.json();
-        // heuristics to render nicely:
-        // 1) if data is an array of objects -> table
-        // 2) if data.rows or data.data or data.table -> table
-        // else pretty print JSON / text
-        if(Array.isArray(data) && data.length>0 && typeof data[0] === 'object'){
-          outputArea.innerHTML = renderJSONTable(data);
-        } else if (data && (Array.isArray(data.rows) || Array.isArray(data.data) || Array.isArray(data.table))) {
-          const arr = data.rows || data.data || data.table;
-          outputArea.innerHTML = renderJSONTable(arr);
-        } else if (typeof data === 'object'){
-          outputArea.innerHTML = '<pre>' + escapeHtml(JSON.stringify(data, null, 2)) + '</pre>';
-        } else {
-          outputArea.innerHTML = '<pre>' + escapeHtml(String(data)) + '</pre>';
+        sendPrompt(p);
+      });
+
+      // Auto-login if previously logged
+      function showDashboard() {
+        loginEl.style.display = "none";
+        dashboardEl.style.display = "block";
+      }
+      if (localStorage.getItem("ttd_logged")) showDashboard();
+
+      // Optional: press Ctrl+Enter to send
+      promptInput.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)) {
+          sendBtn.click();
         }
-      }catch(err){
-        hideSpinner();
-        outputArea.innerHTML = `<pre>Network error: ${escapeHtml(err.message || String(err))}</pre>`;
-      }
-    }
+      });
 
-    loginBtn.addEventListener('click', ()=>{
-      const pw = passwordInput.value || '';
-      if(pw === LOGIN_PW){
-        localStorage.setItem('ttd_logged','1');
-        showDashboard();
-      } else {
-        loginError.style.display='block';
-        loginError.textContent = 'Invalid password. Try "123" for demo.';
-      }
-    });
-
-    demoBtn.addEventListener('click', ()=>{
-      // auto-login as demo and populate example
-      localStorage.setItem('ttd_logged','1');
-      showDashboard();
-      promptInput.value = 'Show me a small example table of users with name and age';
-    });
-
-    logoutBtn.addEventListener('click', ()=>{
-      localStorage.removeItem('ttd_logged');
-      location.reload();
-    });
-
-    clearBtn.addEventListener('click', ()=>{ promptInput.value=''; outputArea.innerHTML=''; });
-
-    sendBtn.addEventListener('click', ()=>{
-      const p = promptInput.value.trim();
-      if(!p){ outputArea.innerHTML = '<div class="muted small">Type a prompt first.</div>'; return; }
-      sendPrompt(p);
-    });
-
-    // Auto-login if previously logged
-    function showDashboard(){ loginEl.style.display='none'; dashboardEl.style.display='block'; }
-    if(localStorage.getItem('ttd_logged')) showDashboard();
-
-    // Optional: press Ctrl+Enter to send
-    promptInput.addEventListener('keydown', (ev)=>{ if(ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)){ sendBtn.click(); } });
-
-    // tiny helper for environments where backend may return plaintext table
-    // not necessary but convenient
-  </script>
-</body>
+      // tiny helper for environments where backend may return plaintext table
+      // not necessary but convenient
+    </script>
+  </body>
 </html>
